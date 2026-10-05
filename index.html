@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment receipt · UI animations</title>
+  <meta name="description" content="Hold to pay: the button folds into a receipt printer, a thermal receipt feeds out, tears off and gets a PAID stamp.">
+  <meta name="theme-color" content="#004741">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="reel/theme.css">
+  <link rel="stylesheet" href="reel/reel.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="demo-page">
+    <section class="pay" data-state="idle" aria-label="Checkout">
+      <button class="pay-btn" type="button" aria-describedby="pay-hint">
+        <span class="pay-fill" aria-hidden="true"></span>
+        <span class="pay-text">Hold to pay <b>$108.00</b></span>
+      </button>
+      <p id="pay-hint" class="pay-hint">Press and hold to confirm</p>
+      <span class="pay-head" aria-hidden="true"></span>
+
+      <div class="pay-clip">
+        <div class="receipt-wrap">
+          <article class="receipt" aria-label="Receipt">
+            <header class="r-head">
+              <span class="r-disc" aria-hidden="true"></span>
+              <h2>Groove Records</h2>
+              <p>West Lake Rd 18 · Hangzhou</p>
+              <p>Receipt #GR-0917-42</p>
+            </header>
+            <hr>
+            <ul class="r-items">
+              <li><span>Kind of Blue · LP</span><span>$34.00</span></li>
+              <li><span>Random Access Memories</span><span>$42.00</span></li>
+              <li><span>Cork turntable mat</span><span>$18.00</span></li>
+              <li><span>Inner sleeves ×10</span><span>$6.00</span></li>
+            </ul>
+            <hr>
+            <ul class="r-sums">
+              <li><span>Subtotal</span><span>$100.00</span></li>
+              <li><span>Tax 8%</span><span>$8.00</span></li>
+            </ul>
+            <div class="r-total"><span>Total</span><strong class="r-amount">$108.00</strong></div>
+            <hr>
+            <p class="r-meta">Visa •••• 4242 · 05 Oct 2026 · 20:17</p>
+            <div class="r-qr" aria-hidden="true"></div>
+            <p class="r-thanks">Thank you · keep it spinning</p>
+          </article>
+          <span class="stamp" aria-hidden="true">Paid</span>
+        </div>
+      </div>
+
+      <div class="confetti" aria-hidden="true"></div>
+      <p class="visually-hidden" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <nav class="toolbar" aria-label="Demo links">
+    <a href="https://www.instagram.com/arslanagayev.dev/">More animations</a>
+    <a href="?reel">Reel mode</a>
+    <a href="https://github.com/arslanagayev/payment-receipt-animation">Source</a>
+  </nav>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+/* Reel mode (?reel): a fixed 1080x1920 stage, scaled to fit the window, ready for screen recording. */
+body.reel { overflow: hidden; background: #001412; }
+body.reel .toolbar { display: none; }
+
+.reel-stage {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 1080px;
+  height: 1920px;
+  transform-origin: center;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 100px 64px 56px;
+  background:
+    radial-gradient(900px 700px at 50% 42%, #0b5f57, transparent 70%),
+    radial-gradient(140% 100% at 50% 50%, transparent 60%, rgb(0 20 18 / 0.7)),
+    var(--cyprus);
+}
+
+/* Soft paper grain over the whole stage */
+.reel-stage::before { content: ""; position: absolute; inset: 0; background: var(--grain); opacity: 0.6; pointer-events: none; }
+
+.reel-title { position: relative; text-align: center; }
+
+.reel-eyebrow {
+  display: inline-block;
+  margin-bottom: 26px;
+  padding: 10px 24px;
+  border: 1.5px solid rgb(240 237 228 / 0.45);
+  border-radius: 999px;
+  font: 500 22px/1 var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+
+.reel-title h1 { margin: 0; font: 400 170px/0.9 var(--serif); letter-spacing: -0.02em; color: var(--sand); }
+.reel-title h1 span { font-style: italic; color: var(--cyprus-mist); }
+
+.reel-demo {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+.reel-demo > * { transform: scale(var(--demo-scale, 1.55)); }
+
+/* Code window: a dark cyprus card with sand text */
+.reel-code {
+  position: relative;
+  border-radius: 26px;
+  background: rgb(0 31 28 / 0.85);
+  border: 1.5px solid rgb(240 237 228 / 0.16);
+  box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.6);
+  overflow: hidden;
+}
+
+.reel-code header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 26px;
+  border-bottom: 1.5px solid rgb(240 237 228 / 0.12);
+  color: var(--muted);
+  font: 500 22px/1 var(--mono);
+}
+
+.reel-code header i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; background: rgb(240 237 228 / 0.25); }
+.reel-code header i:nth-child(1) { background: var(--sand); }
+.reel-code header i:nth-child(3) { margin-right: 10px; }
+
+.reel-code pre { margin: 0; padding: 24px 30px 30px; font: 400 23px/1.5 var(--mono); color: var(--sand); white-space: pre; }
+
+/* Token colours used by highlight() in reel.js: sand and cyprus tints only */
+.tk-k { color: #ffffff; font-weight: 700; }
+.tk-s { color: var(--cyprus-mist); }
+.tk-n { color: #f7d9a8; }
+.tk-c { color: rgb(240 237 228 / 0.45); font-style: italic; }
+.tk-f { color: var(--sand); font-weight: 700; }
+.tk-p { color: #c9d9d3; }
+
+.reel-handle {
+  position: relative;
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  color: var(--sand);
+  font: 500 30px/1 var(--font);
+}
+
+.reel-handle img { width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 0 0 2px var(--sand); }
+
+/* End card */
+.reel-outro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 30px;
+  background: rgb(0 71 65 / 0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  text-align: center;
+}
+
+.reel-outro.show { opacity: 1; }
+.reel-outro img { width: 210px; height: 210px; border-radius: 50%; box-shadow: 0 0 0 8px var(--sand), 0 30px 60px rgb(0 0 0 / 0.4); }
+.reel-outro strong { font: 400 88px/1 var(--serif); color: var(--sand); }
+.reel-outro p { margin: 0; color: var(--muted); font: 400 36px/1.2 var(--font); }
+.reel-outro b { color: var(--sand); font-style: italic; font-family: var(--serif); font-weight: 400; font-size: 1.2em; }
+
+/* Fake cursor used by the autoplay script */
+.reel-cursor {
+  position: absolute;
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  margin: -6px 0 0 -6px;
+  pointer-events: none;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.45));
+}
+
+.reel-cursor::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border: 3px solid var(--sand);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.reel-cursor.press::after { animation: cursor-press 0.45s ease-out; }
+
+@keyframes cursor-press {
+  from { transform: scale(0.2); opacity: 1; }
+  to { transform: scale(1.4); opacity: 0; }
+}
+
+/* Demo-only helpers (hints, live-region text) are noise in a video. */
+.reel .reel-hide, .autoplay .reel-hide, body.autoplay .toolbar { display: none !important; }
+
+/* 4:5 stage (Instagram carousel): tighter spacing, slightly smaller title */
+.reel-stage.compact { padding: 70px 60px 44px; }
+.reel-stage.compact .reel-title h1 { font-size: 132px; }
+.reel-stage.compact .reel-eyebrow { margin-bottom: 18px; }
